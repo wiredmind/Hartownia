@@ -83,6 +83,129 @@ body { font-family: 'Inter', system-ui, sans-serif; padding-top: env(safe-area-i
 <div id="toast" style="position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-80px);background:#111;color:#fff;font-size:14px;padding:8px 18px;border-radius:999px;z-index:200;transition:transform .2s;pointer-events:none;white-space:nowrap"></div>
 
 <script>
+const EX_TIPS = {
+  pushups: {
+    how: 'High plank, hands just outside shoulder width. Lower chest to the floor keeping elbows at 45° — not flared wide. Full lockout at the top. Don\'t let hips sag or pike.',
+    cues: ['Elbows track at 45°, not 90°','Chest touches floor, not chin','Body is one rigid plank throughout'],
+    warn: 'Shoulder: if you feel impingement, narrow grip slightly and keep shoulder blades retracted throughout. Stop immediately at pain — not soreness, pain.'
+  },
+  pike: {
+    how: 'Hips high in an inverted V. Lower your head toward the floor between your hands, then press back up. Loads the front deltoid with less rotator cuff stress than flat push-ups.',
+    cues: ['Hips stay high throughout','Head travels in a straight line down','Press back to full lockout'],
+    warn: 'Good shoulder substitute when flat push-ups hurt. If this also hurts, skip both and just do band work.'
+  },
+  pullap: {
+    how: 'Hold a resistance band at shoulder height, arms straight out in front. Pull apart horizontally until arms are fully extended to each side. Slow and controlled — squeeze the shoulder blades together at end range.',
+    cues: ['Arms stay straight throughout','Squeeze shoulder blades hard at end','2 seconds out, 2 seconds back'],
+    warn: 'This is the most important exercise for your shoulder. The contraction at end range is everything — don\'t rush it.'
+  },
+  grip: {
+    how: 'Throw a towel over a pull-up bar, grip both ends, dead hang. Forearms, hands, and fingers working hard. If it gets easy, work toward single-arm or thicker towels.',
+    cues: ['Full dead hang — don\'t cheat by pulling','Grip as tight as possible','Breathe steadily'],
+    warn: 'Relevant for sustained braking grip on long sessions. By lap 25 your hands will thank you.'
+  },
+  wrist: {
+    how: 'Extend arm, rotate wrist through full range — palm up to palm down and back. Add slow circles. Use a light dumbbell to add resistance. Both directions, both wrists.',
+    cues: ['Full range of motion — don\'t shortcut','Slow and deliberate, not fast','Include circles in both directions'],
+    warn: 'Keeps the forearms supple for braking grip. Stiff wrists transfer tension up into the shoulder.'
+  },
+  squat: {
+    how: 'Feet shoulder-width, toes slightly out. Sit back and down, keep chest up, knees track over toes. Full depth if mobility allows. Drive through the whole foot on the way up.',
+    cues: ['Chest stays up — don\'t fold forward','Knees push out, track over toes','Full depth — thighs parallel or below'],
+    warn: 'If your heels rise, work on ankle mobility or use a slight heel elevation until it improves.'
+  },
+  wsite: {
+    how: 'Back flat against wall, thighs parallel to floor, 90° at the knee. Arms crossed or resting on thighs. Keep the lower back pressed into the wall throughout — don\'t let it arch away.',
+    cues: ['Lower back glued to wall','Thighs parallel to floor — not higher','Breathe steadily through the burn'],
+    warn: 'The sustained quad load is exactly what stabilizes you through long corners. This is one of the most track-specific exercises in this program.'
+  },
+  lunge: {
+    how: 'Step forward, lower back knee toward floor without touching. Push through the front heel to return. Keep torso upright. Alternate legs each rep or complete all reps one side then switch.',
+    cues: ['Front shin stays vertical — don\'t let knee travel past toes','Torso upright — don\'t lean forward','Control the descent, don\'t drop'],
+    warn: null
+  },
+  calf: {
+    how: 'Stand on the edge of a step for full range of motion. Rise onto toes, pause at the top, lower slowly past neutral. The controlled lowering is where the real work happens.',
+    cues: ['Pause 1 second at the top','Lower slowly — 3 seconds down','Full range: stretch at the bottom'],
+    warn: 'Relevant for peg feel and brake modulation. Weak calves mean imprecise footwork.'
+  },
+  neck: {
+    how: 'Place hand against forehead. Push head into hand while hand resists — nothing moves. Hold 10 seconds. Repeat for back of head, then both sides. Four directions, 3 rounds.',
+    cues: ['Maximum effort push against the hand','Nothing should move — isometric','4 directions: front, back, left, right'],
+    warn: 'Non-negotiable. Do this watching TV — no gym needed. The Tuono at speed will fatigue a weak neck by session 3 and you\'ll start making mistakes.'
+  },
+  pullup: {
+    how: 'Dead hang start, full lockout at the bottom. Pull until chin clears the bar. Don\'t kip. If you can\'t do a full rep, jump to the top and lower yourself as slowly as possible — negatives build the same strength.',
+    cues: ['Full dead hang between reps','Chin clearly over the bar at the top','Shoulders down and back — don\'t shrug'],
+    warn: 'Negatives: jump to top position, lower over 5 seconds. Far more productive than half-reps or assisted work.'
+  },
+  invrow: {
+    how: 'Set a bar at waist height. Hang underneath with straight body, feet on floor. Pull chest to bar, squeeze shoulder blades at the top. The more horizontal your body, the harder it gets.',
+    cues: ['Body stays straight — don\'t pike hips','Pull until chest touches the bar','Squeeze shoulder blades together at top'],
+    warn: 'Use instead of pull-ups while you rebuild. Adjust difficulty by walking feet closer to (easier) or further from (harder) the bar.'
+  },
+  facep: {
+    how: 'Anchor band at face height. Pull toward your face, elbows high and wide, externally rotate so hands finish behind ears. Targets rear deltoid and rotator cuff.',
+    cues: ['Elbows high and wide — not dropping','External rotation at the end: hands behind ears','Slow and controlled — feel the rear delt'],
+    warn: 'This is the motion that reverses all the pressing damage. The external rotation at the end range is the whole point — don\'t skip it.'
+  },
+  plank: {
+    how: 'Forearms or hands on the floor, body in a straight line from head to heels. Don\'t let hips rise or sag. Breathe. Squeeze glutes and quads to help maintain the position.',
+    cues: ['Hips level — not a tent, not a hammock','Squeeze glutes and core simultaneously','Breathe — don\'t hold your breath'],
+    warn: 'If form breaks down before the time is up, stop and rest. A 20-second perfect plank beats a 45-second sloppy one.'
+  },
+  sidepl: {
+    how: 'On one forearm, body straight, hips up. Don\'t let the hip sag toward the floor. Keep a straight line from head to feet. Progress by raising the top leg.',
+    cues: ['Hip stays elevated — don\'t sag','Body in one straight line','Look straight ahead, don\'t crane the neck'],
+    warn: 'Builds the lateral stability that keeps you anchored on the bike through cambered corners and direction changes.'
+  },
+  deadbg: {
+    how: 'Lie on back, arms pointing to ceiling, knees bent 90° in the air. Slowly lower opposite arm and leg toward the floor without letting your lower back arch away from the floor. Return and repeat other side.',
+    cues: ['Lower back stays glued to floor — this is everything','Move arm and leg simultaneously','Slow and controlled — 3 seconds down'],
+    warn: 'If your lower back arches before limbs reach the floor, only lower as far as you can maintain contact. Range will improve over weeks.'
+  },
+  slsqt: {
+    how: 'Stand on one leg in front of a chair. Lower slowly until you just touch the seat, then drive back up through the whole foot. The other leg floats forward. Control the descent — don\'t fall onto the chair.',
+    cues: ['Touch the chair lightly — don\'t sit','Drive through the whole foot on the way up','Keep the floating leg from touching down'],
+    warn: 'Much harder than it sounds. Builds the asymmetric leg strength you use when weighting the pegs independently through a corner.'
+  },
+  brdge: {
+    how: 'Lie on back, knees bent, feet flat. Drive hips to the ceiling, squeeze glutes hard at the top. Hold 2 seconds. Lower with control. Keep core braced throughout. Add a band above the knees for more glute activation.',
+    cues: ['Squeeze glutes hard at the top — hold 2 seconds','Core braced throughout — don\'t let ribs flare','Drive through the heels, not the toes'],
+    warn: 'Hip stability directly supports tank grip and body positioning. Weak glutes mean you use the bars to hold yourself — exactly what you don\'t want.'
+  },
+  farmr: {
+    how: 'Pick up something heavy in each hand — dumbbells, kettlebells, or whatever you have. Walk with it. Keep shoulders back, core tight, don\'t let the weight pull you sideways.',
+    cues: ['Shoulders back and down — don\'t shrug','Core tight — don\'t let spine twist','Deliberate steps, controlled pace'],
+    warn: 'Grip and core simultaneously. One of the most functional exercises in this program. Use the heaviest thing you have that lets you maintain posture.'
+  },
+  zone2: {
+    how: 'Run, bike, or any sustained cardio at a pace where you could hold a conversation but wouldn\'t want to sing. Heart rate roughly 120–140 bpm. Not intervals, not sprints — steady state.',
+    cues: ['Conversational pace — not gasping','Consistent effort throughout','Bike is best: body position is closest to riding'],
+    warn: 'This is aerobic base work. Going harder is counterproductive. The goal is time in zone, not intensity. Add 5 minutes each week.'
+  },
+  rope: {
+    how: 'Basic two-foot jump to start. Once comfortable: alternate feet, high knees, or double-unders if you can. Keep a light bounce, stay on the balls of your feet.',
+    cues: ['Light bounce — minimal height','Stay on balls of feet throughout','Elbows in, wrists do the rotation'],
+    warn: 'Alternative to zone 2 cardio. Also trains coordination and foot quickness which transfers to smooth peg work.'
+  },
+  lzone2: {
+    how: 'Same as Wednesday but longer. A bicycle is the best option — you\'re in a similar body position to the bike, loading the same postural muscles. Run if that\'s what you have.',
+    cues: ['Conversational pace throughout','Add 5 minutes each week from your starting point','Stay consistent — same effort, longer duration'],
+    warn: 'By week 6 you should be at 45 minutes. This is the session that builds the stamina to stay sharp on lap 30 the way you were on lap 1.'
+  },
+  pullap2: {
+    how: 'Same as Monday. Second band session this week doubles the posterior shoulder work. Same form — slow, controlled, full range, squeeze at end.',
+    cues: ['Same form as Monday','Control the return — don\'t let band snap back','Feel the rear delt, not the traps'],
+    warn: 'Two pull-apart sessions per week is the minimum for meaningful shoulder rebalancing alongside the push work.'
+  },
+  neck2: {
+    how: 'Same as Tuesday. Hand against head, push and resist in all four directions. Nothing moves. Four directions, three rounds, ten seconds each.',
+    cues: ['Maximum effort each direction','Reset completely between directions','Don\'t rush the 10 seconds'],
+    warn: 'Second neck session this week. By week 4 you should notice a difference holding position on the bike under hard braking.'
+  },
+};
+
 const DAYS = [
   { id:'mon', name:'Monday', focus:'Push · Grip · Shoulder', color:'#b91c1c',
     exercises:[
@@ -260,6 +383,15 @@ const EX_ICONS = {
   pullap2:'move-horizontal', neck2:'shield', lzone2:'heart-pulse',
 };
 
+function toggleTip(id){
+  const el=document.getElementById('tip_'+id);
+  const chev=document.getElementById('tipchev_'+id);
+  if(!el)return;
+  const open=el.style.display==='none'||el.style.display==='';
+  el.style.display=open?'block':'none';
+  if(chev)chev.style.transform=open?'rotate(180deg)':'';
+}
+
 function renderExercises(){
   const el=document.getElementById('tab-exercises');
   let h='<div class="p-3 space-y-4">';
@@ -278,13 +410,29 @@ function renderExercises(){
     h+='<div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden divide-y divide-gray-100">';
     day.exercises.forEach(ex=>{
       const icon=EX_ICONS[ex.id]||'circle';
-      h+='<div class="px-4 py-3 flex items-start gap-3">';
+      const tips=EX_TIPS[ex.id];
+      h+='<div>';
+      h+='<div class="px-4 py-3 flex items-start gap-3 cursor-pointer" onclick="toggleTip(\''+ex.id+'_'+day.id+'\')">';
       h+='<div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0 mt-0.5">';
       h+='<i data-lucide="'+icon+'" style="width:16px;height:16px;color:#6b7280"></i></div>';
-      h+='<div class="flex-1"><div class="font-medium text-gray-900 text-sm">'+ex.name+'</div>';
+      h+='<div class="flex-1 min-w-0"><div class="font-medium text-gray-900 text-sm">'+ex.name+'</div>';
       h+='<div class="text-sm text-gray-500 mt-0.5">'+ex.rx+'</div>';
-      if(ex.note)h+='<div class="text-xs text-gray-400 mt-1">'+ex.note+'</div>';
-      h+='</div></div>';
+      if(ex.note)h+='<div class="text-xs text-red-700 mt-1">'+ex.note+'</div>';
+      h+='</div>';
+      if(tips)h+='<svg id="tipchev_'+ex.id+'_'+day.id+'" style="width:16px;height:16px;color:#9ca3af;flex-shrink:0;margin-top:4px;transition:transform .2s" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+      h+='</div>';
+      if(tips){
+        h+='<div id="tip_'+ex.id+'_'+day.id+'" style="display:none" class="px-4 pb-4 pt-1 bg-gray-50 border-t border-gray-100">';
+        h+='<p class="text-sm text-gray-700 leading-relaxed mb-3">'+tips.how+'</p>';
+        h+='<div class="space-y-1.5 mb-3">';
+        tips.cues.forEach(c=>{
+          h+='<div class="flex gap-2 text-sm"><span class="text-green-600 font-semibold flex-shrink-0">✓</span><span class="text-gray-600">'+c+'</span></div>';
+        });
+        h+='</div>';
+        if(tips.warn)h+='<div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-xs text-red-800 leading-relaxed">'+tips.warn+'</div>';
+        h+='</div>';
+      }
+      h+='</div>';
     });
     h+='</div></div>';
   });
