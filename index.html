@@ -158,8 +158,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .tl-row{display:flex;gap:14px;padding:16px 18px;border-bottom:1px solid var(--border);}
 .tl-row:last-child{border-bottom:none;}
 .tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:6px;}
-.tl-label{font-weight:600;font-size:16px;color:var(--text);}
-.tl-date{font-family:'Barlow Condensed';font-size:14px;font-weight:700;letter-spacing:.05em;flex-shrink:0;}
+.tl-label{font-weight:600;font-size:15px;color:var(--text);flex:1;min-width:0;}
+.tl-date{font-family:'Barlow Condensed';font-size:14px;font-weight:700;letter-spacing:.05em;flex-shrink:0;white-space:nowrap;}
 .tl-detail{font-size:14px;color:var(--muted);margin-top:4px;line-height:1.55;}
 
 .pb-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px;}
@@ -295,7 +295,7 @@ const DAYS=[
 
 const TRACK_EVENTS=[
   {date:'May 2',label:'PTD — 1-on-1 Coaching',detail:'Give coach full context upfront: T16–18 line, T11 brake marker, T19, drive out. Cornerstone day.',next:true},
-  {date:'Jul 25',label:'PTD — Consolidation',detail:'Implement May coaching. Hunt consistency, not peak times. Gym day.',next:false},
+  {date:'Jul 26',label:'PTD — Consolidation',detail:'Implement May coaching. Hunt consistency, not peak times. Gym day.',next:false},
   {date:'Aug 2',label:'RideSmart — Eval Day',detail:'Request eval. Arrive warmed up. This is the comp day.',next:false},
   {date:'Aug 9',label:'PTD — Implement',detail:'Take RS feedback, apply immediately. Back-to-back with eval week.',next:false},
 ];
