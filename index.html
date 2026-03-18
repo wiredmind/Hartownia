@@ -294,8 +294,8 @@ const DAYS=[
 ];
 
 const TRACK_EVENTS=[
-  {date:'May 2',label:'PTD — 1-on-1 Coaching',detail:'Give coach full context: T16–18 line, T11 brake marker, T19, drive out. Cornerstone day of the season.',next:true},
-  {date:'July',label:'PTD — Consolidation',detail:'Implement May coaching. Hunt consistency, not peak times.',next:false},
+  {date:'May 2',label:'PTD — 1-on-1 Coaching',detail:'Give coach full context upfront: T16–18 line, T11 brake marker, T19, drive out. Cornerstone day.',next:true},
+  {date:'Jul 25',label:'PTD — Consolidation',detail:'Implement May coaching. Hunt consistency, not peak times. Gym day.',next:false},
   {date:'Aug 2',label:'RideSmart — Eval Day',detail:'Request eval. Arrive warmed up. This is the comp day.',next:false},
   {date:'Aug 9',label:'PTD — Implement',detail:'Take RS feedback, apply immediately. Back-to-back with eval week.',next:false},
 ];
@@ -378,7 +378,12 @@ function renderSchedule(){
    'T19: refuse to brake for one full session — find out what happens',
    'T11: brake marker one bike length deeper than where you\'ve been',
    'Every corner: hear the floor — baaaaa · uuuuuuhuuu · baaaaa',
-   'Drive out: load the rear, wait for the bite before full throttle'].forEach(n=>{
+   'Drive out: load the rear, wait for the bite before full throttle',
+   'T12: you already own it — use it as your reference for minimum speed',
+   'T1: you\'re consistent here — stay deliberate, don\'t coast on confidence',
+   'The S complex: link T3–5 as one arc, stop treating each kink separately',
+   'Traffic: outside passing only — patience is pace, not a compromise',
+   'Eval day: arrive warmed up, not on a hot lap. Let the session build'].forEach(n=>{
     h+='<div class="mental-item"><span class="mental-arrow">→</span><span>'+n+'</span></div>';
   });
   h+='</div>';
@@ -470,9 +475,11 @@ function renderProgress(){
   h+='<div class="section-title bc">Season Timeline</div>';
   h+='<div class="tl-card">';
   TRACK_EVENTS.forEach(e=>{
+    const dotStyle=e.next
+      ?'background:#C9A84C;box-shadow:0 0 0 3px rgba(201,168,76,.2)'
+      :'background:#2E2E2E';
     h+='<div class="tl-row">';
-    h+='<div class="tl-dot" style="background:'+(e.next?'#C9A84C':'#2E2E2E');
-    h+=e.next?';box-shadow:0 0 0 3px rgba(201,168,76,.2)':''+'"></div>';
+    h+='<div class="tl-dot" style="'+dotStyle+'"></div>';
     h+='<div style="flex:1"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">';
     h+='<span class="tl-label">'+e.label+'</span>';
     h+='<span class="tl-date bc" style="color:'+(e.next?'#C9A84C':'#444')+'">'+e.date+'</span></div>';
